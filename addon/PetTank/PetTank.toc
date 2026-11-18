@@ -1,0 +1,7 @@
+## Interface: 30300
+## Title: Pet Tank
+## Notes: Where your pet's tank bonuses are on for you (threat, regen, Mend Pet, Health Funnel).
+## Author: FlyingArowana
+## Version: 1
+## SavedVariables: PetTankDB
+PetTank.lua

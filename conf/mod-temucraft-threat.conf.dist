@@ -1,0 +1,334 @@
+[worldserver]
+
+###################################################################################################
+# mod-temucraft-threat
+#
+# Players: tanks make more threat, tank mode for specs that were never tanks, healers make less.
+# Pets: the pet tank settings (PetTank.*) further down.
+###################################################################################################
+#
+#    Temucraft.Threat.Enable
+#        Description: The player side of the module (tank bonus, tank mode, healer reduction). PetTank.Enable is
+#                     the pet side.
+#        Default:     1
+#
+#    Temucraft.Threat.Tank (.Percent, .ClassPercent, .Specs, .NeedStance)
+#        Description: Tank specs ("class:tree" or "class:first-last", tree = talent tab with the most points) make
+#                     Percent % more threat, on top of what the class already has. ClassPercent overrides it per
+#                     class ("class:percent", e.g. "1:40 11:60"). With NeedStance only in Defensive Stance (warrior),
+#                     Righteous Fury (paladin), Bear / Dire Bear Form (druid) or Frost Presence (death knight).
+#                     Players in tank mode (below) get it too. .threat shows what applies to you.
+#                     Classes: 1 warrior 2 paladin 3 hunter 4 rogue 5 priest 6 death knight 7 shaman 9 warlock 11 druid.
+#        Default:     1, 50, "", "1:2 2:1 11:1 6:0-2", 1
+#
+#    Temucraft.Threat.TankMode (.Specs, .DamageTaken, .Taunt, .Threat)
+#        Description: .tankmode for the listed specs (default Demonology warlock, Enhancement shaman, Survival
+#                     hunter, Combat rogue). While on: the tank classes' passive threat bonus (+43%), the tank bonus
+#                     above, Taunt (if Taunt is on), DamageTaken % less damage, and the Threat "spell:multiplier"
+#                     abilities (any rank) make that much more threat: Earth Shock x3, Raptor Strike and Mongoose
+#                     Bite x2, Sinister Strike x2, Searing Pain, Shadow Bolt and Shadowburn x1.5, Hellfire x2.
+#        Default:     1, "9:1 7:1 3:2 4:1", 10, 1, "8042:3 2973:2 1495:2 1752:2 5676:1.5 686:1.5 1949:2 1120:1.5"
+#
+#    Temucraft.Threat.Healer (.Percent, .Specs)
+#        Description: Healer specs make Percent % less threat with everything (heals and damage), through a hidden
+#                     aura.
+#        Default:     1, 30, "5:0 5:1 2:0 7:2 11:2" (discipline/holy priest, holy paladin, restoration shaman and druid)
+#
+#    Temucraft.Threat.Roles (.PartyTanks, .Raid10Tanks, .Raid25Tanks)
+#        Description: Group tank roles. Dungeon Finder groups: see OffSpec. Walk-in groups: the spec decides; with
+#                     more tank specs than places (PartyTanks in a party, Raid10Tanks in a raid of up to 10,
+#                     Raid25Tanks in a bigger one) the tanks claim the places, and if more claim than fit the group
+#                     votes (ties: the leader's vote, then who claimed first). Tanks not chosen play without the tank
+#                     bonus. The Temucraft interface asks; .tankrole does the same in chat.
+#        Default:     1, 1, 2, 3
+#
+#    Temucraft.Threat.Roles.OffSpec (.Threat)
+#        Description: Dungeon Finder: taking the tank role without a tank spec gives "Not Playing Your Spec": Threat %
+#                     threat instead of the tank bonus, 10% less health, armor and damage, 20% less maximum mana,
+#                     rage and energy (spells 96390/96391). A tank spec in another role gets no tank bonus.
+#        Default:     1, -20
+#
+#    Temucraft.Threat.Roles.StandIn (.Taunt)
+#        Description: Nobody in the group plays a tank spec: someone can stand in as tank (volunteer, or be picked
+#                     and accept). Stand-in Tank (spells 96392/96393): the tank bonus of their class
+#                     (Temucraft.Threat.Tank.Percent / ClassPercent), Taunt (if .Taunt), 1% more mana, energy and
+#                     runic power regeneration, 10% less health, armor and damage. Ends when a tank joins.
+#        Default:     1, 1
+#
+#    Temucraft.Threat.Roles.NoTank.Prompt (.Cooldown)
+#        Description: When the group is asked about a stand-in tank (out of combat only): "full" (5 players in a
+#                     party), "instance" (anyone in the group is in a dungeon or raid), both, or "" (only with
+#                     .tankrole ask). Cooldown: seconds before asking again if nobody stood in (a new member asks
+#                     again at once).
+#        Default:     "full,instance", 600
+#
+#    Temucraft.Threat.Roles.ClaimSeconds, .VoteSeconds, .NoTankSeconds, .PickSeconds
+#        Description: How long each question stays open (10-300).
+#        Default:     30, 30, 60, 30
+
+Temucraft.Threat.Enable = 1
+Temucraft.Threat.Tank = 1
+Temucraft.Threat.Tank.Percent = 50
+Temucraft.Threat.Tank.ClassPercent = ""
+Temucraft.Threat.Tank.Specs = "1:2 2:1 11:1 6:0-2"
+Temucraft.Threat.Tank.NeedStance = 1
+Temucraft.Threat.TankMode = 1
+Temucraft.Threat.TankMode.Specs = "9:1 7:1 3:2 4:1"
+Temucraft.Threat.TankMode.DamageTaken = 10
+Temucraft.Threat.TankMode.Taunt = 1
+Temucraft.Threat.TankMode.Threat = "8042:3 2973:2 1495:2 1752:2 5676:1.5 686:1.5 1949:2 1120:1.5"
+Temucraft.Threat.Healer = 1
+Temucraft.Threat.Healer.Percent = 30
+Temucraft.Threat.Healer.Specs = "5:0 5:1 2:0 7:2 11:2"
+Temucraft.Threat.Roles = 1
+Temucraft.Threat.Roles.PartyTanks = 1
+Temucraft.Threat.Roles.Raid10Tanks = 2
+Temucraft.Threat.Roles.Raid25Tanks = 3
+Temucraft.Threat.Roles.OffSpec = 1
+Temucraft.Threat.Roles.OffSpec.Threat = -20
+Temucraft.Threat.Roles.StandIn = 1
+Temucraft.Threat.Roles.StandIn.Taunt = 1
+Temucraft.Threat.Roles.NoTank.Prompt = "full,instance"
+Temucraft.Threat.Roles.NoTank.Cooldown = 600
+Temucraft.Threat.Roles.ClaimSeconds = 30
+Temucraft.Threat.Roles.VoteSeconds = 30
+Temucraft.Threat.Roles.NoTankSeconds = 60
+Temucraft.Threat.Roles.PickSeconds = 30
+
+###################################################################################################
+# Pet tank (PetTank.*)
+###################################################################################################
+
+###################################################################################################
+# SECTION INDEX
+#
+#    WHAT IT DOES
+#    GENERAL
+#    WHERE IT WORKS
+#    THREAT AND REGENERATION
+#    MEND PET AND HEALTH FUNNEL
+#    HUNTER PET HAPPINESS
+#    STARTING PET
+#
+###################################################################################################
+
+###################################################################################################
+# WHAT IT DOES
+#
+# Pets that taunt (or every pet, PetTank.Pets) hold threat like a tank, regenerate faster out of combat, and get
+# more out of Mend Pet and Health Funnel for less. PetTank.Where.* says where, per place and per group size;
+# players can turn it off for themselves per place (the PetTank addon or .pettank off <place>).
+#
+###################################################################################################
+
+###################################################################################################
+# GENERAL
+#
+#    PetTank.Enable
+#        Description: Turn the whole module on or off.
+#        Default:     1 - enabled
+#                     0 - disabled
+
+PetTank.Enable = 1
+
+#
+#    PetTank.Announce
+#        Description: Tell players in chat when their pet's bonuses turn on or off (entering a dungeon, joining a
+#                     raid...). Only players with a pet that counts are told.
+#        Default:     1 - enabled
+#                     0 - disabled
+
+PetTank.Announce = 1
+
+#
+#    PetTank.Pets
+#        Description: Which pets get the bonuses.
+#        Default:     0 - pets that know a taunt: hunter pets with Growl, the Voidwalker (Torment, Suffering), the
+#                         Felguard (Anguish) and the shaman's Greater Earth Elemental (Angered Earth)
+#                     1 - every pet and guardian a player controls (not totems)
+
+PetTank.Pets = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# WHERE IT WORKS
+#
+#    PetTank.Where.World
+#    PetTank.Where.Dungeon.Normal
+#    PetTank.Where.Dungeon.Heroic
+#    PetTank.Where.Raid10.Normal
+#    PetTank.Where.Raid10.Heroic
+#    PetTank.Where.Raid25.Normal
+#    PetTank.Where.Raid25.Heroic
+#    PetTank.Where.Battleground
+#    PetTank.Where.Arena
+#        Description: Where the bonuses work, and for whom there: a list of solo, party and raid (in a raid group),
+#                     separated by commas, or all, or none. Examples:
+#                       "solo,party,raid"  everyone
+#                       "solo"             only players on their own
+#                       "party,raid"       only in a group
+#                       "none"             nowhere
+#                     Raids from before Wrath have one size: they count as their size's normal difficulty.
+#        Default:     "solo,party,raid" everywhere but battlegrounds and arenas ("none")
+
+PetTank.Where.World = "solo,party,raid"
+PetTank.Where.Dungeon.Normal = "solo,party,raid"
+PetTank.Where.Dungeon.Heroic = "solo,party,raid"
+PetTank.Where.Raid10.Normal = "solo,party,raid"
+PetTank.Where.Raid10.Heroic = "solo,party,raid"
+PetTank.Where.Raid25.Normal = "solo,party,raid"
+PetTank.Where.Raid25.Heroic = "solo,party,raid"
+PetTank.Where.Battleground = "none"
+PetTank.Where.Arena = "none"
+
+#
+#    PetTank.PlayerToggle
+#        Description: Players may turn the bonuses off for themselves, per place (the PetTank addon, or
+#                     .pettank off <world|normal|heroic|raid10|raid10h|raid25|raid25h|bg|arena|here|all>). They can
+#                     never turn them on where PetTank.Where.* doesn't allow them.
+#        Default:     1 - enabled
+#                     0 - disabled (the server settings decide alone)
+
+PetTank.PlayerToggle = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# THREAT AND REGENERATION
+#
+#    PetTank.Threat.Percent
+#        Description: Extra threat the pet makes, in percent (100 = twice the threat). 0 turns this part off.
+#                     Up to 1000.
+#        Default:     100
+
+PetTank.Threat.Percent = 100
+
+#
+#    PetTank.Regen.HealthPercent
+#    PetTank.Regen.PowerPercent
+#        Description: Out of combat, the pet gets this percent of its max health / power (mana, focus or energy)
+#                     back every second, on top of its own regeneration. 0 turns that part off.
+#        Default:     2 (full in under a minute)
+
+PetTank.Regen.HealthPercent = 2
+PetTank.Regen.PowerPercent = 2
+
+#
+#    PetTank.Regen.WhileOwnerInCombat
+#        Description: Keep the extra regeneration going while the pet is out of combat but its owner isn't.
+#        Default:     0 - only when both are out of combat
+#                     1 - whenever the pet is out of combat
+
+PetTank.Regen.WhileOwnerInCombat = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# MEND PET AND HEALTH FUNNEL
+#
+#    PetTank.MendPet.HealingPercent
+#    PetTank.HealthFunnel.HealingPercent
+#        Description: Mend Pet (hunter) and Health Funnel (warlock) heal a pet that counts for this much more, in
+#                     percent (50 = one and a half times). Up to 1000.
+#        Default:     50
+
+PetTank.MendPet.HealingPercent = 50
+PetTank.HealthFunnel.HealingPercent = 50
+
+#
+#    PetTank.MendPet.CostPercent
+#    PetTank.HealthFunnel.CostPercent
+#        Description: What's left to pay of the spell's usual cost, in percent: Mend Pet's mana, Health Funnel's
+#                     health (at the start and every second of the channel). The rest comes back right away.
+#                     100 = the usual cost, 0 = free.
+#        Default:     50
+
+PetTank.MendPet.CostPercent = 50
+PetTank.HealthFunnel.CostPercent = 50
+
+#
+###################################################################################################
+
+###################################################################################################
+# HUNTER PET HAPPINESS
+#
+#    PetTank.Happiness.Tamed
+#    PetTank.Happiness.Minimum
+#        Description: Hunter pet happiness, from the worst to the best. Unhappy pets do 75% damage, content 100%,
+#                     happy 125%; feeding raises it and it slowly drops (faster in combat). Both work for every
+#                     hunter pet everywhere, apart from PetTank.Where and PetTank.Pets.
+#
+#                     Tamed:   how happy a pet is right after taming (the core starts it unhappy, at "unhappy").
+#                     Minimum: pets don't stay below this (see PetTank.Happiness.Mode), so feeding becomes
+#                     optional above it.
+#
+#                     Values, worst to best (or a percent of the happiness bar, 0 to 100, like "40"):
+#                       core / off   leave it as the core does (Tamed: unhappy; Minimum: no minimum)
+#                       empty        0%      unhappy, the bottom of the bar
+#                       unhappy      16%     unhappy (75% damage), where the core starts a tame
+#                       lowcontent   32%     just content (100% damage)
+#                       content      48%     content, in the middle
+#                       lowhappy     63%     just happy (125% damage)
+#                       happy        82%     happy, in the middle
+#                       full         100%    happy, the top of the bar
+#        Default:     Tamed "full", Minimum "off"
+
+PetTank.Happiness.Tamed = "full"
+PetTank.Happiness.Minimum = "off"
+
+#
+#    PetTank.Happiness.Mode
+#        Description: How PetTank.Happiness.Minimum applies (nothing happens with Minimum = "off").
+#        Default:     "enforce" - always, by itself: a pet below the minimum goes back up right away
+#                     "player"  - each player chooses: by itself, or only when they ask (.pettank happy, or the
+#                                 PetTank addon's button); .pettank happy auto on|off, or the addon, switches
+
+PetTank.Happiness.Mode = "enforce"
+
+#
+#    PetTank.Happiness.AutoDefault
+#        Description: With PetTank.Happiness.Mode = "player", what a player who hasn't chosen yet gets.
+#        Default:     1 - by itself
+#                     0 - only when they ask
+
+PetTank.Happiness.AutoDefault = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# STARTING PET
+#
+#    PetTank.StartingPet
+#        Description: Hunters start with a pet. Which one comes from the world table pet_tank_starting_pet, one
+#                     row per race and class (raceMask, classMask, creature, quest, comment; like
+#                     playercreateinfo_skills). By default each race's last "Taming the Beast" creature: Armored
+#                     Scorpid (orc, troll), Ice Claw Bear (dwarf), Strigid Screecher (night elf), Swoop (tauren),
+#                     Mistbat (blood elf), Nightstalker (draenei). They also learn Call Pet, Dismiss Pet, Revive Pet
+#                     and Feed Pet, so the pet can be called back. Any class can have rows: a character gets the
+#                     pet when the core lets them use hunter pets (hunters, or classes a script lets use them).
+#                     This works with PetTank.Enable = 0 too.
+#        Default:     0 - off
+#                     1 - new characters, on their first login
+#                     2 - new characters, and existing ones once, on their next login (only those with no pet at
+#                         all, current or stabled)
+
+PetTank.StartingPet = 0
+
+#
+#    PetTank.StartingPet.Quests
+#        Description: Also mark the hunter's taming quests done: the row's quest column (the last of the series),
+#                     every quest before it and the quests leading into it ("The Hunter's Path"). Their spells
+#                     are learned as if turned in: Tame Beast, then Beast Training. No experience or items.
+#                     Rows with quest = 0 are left alone.
+#        Default:     1 - enabled
+#                     0 - disabled (only the pet and its four spells)
+
+PetTank.StartingPet.Quests = 1
+
+#
+###################################################################################################
