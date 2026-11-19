@@ -38,7 +38,7 @@ SQL from the English texts in the code.
 
 ## Pets (pet tank)
 
-The pet tank part was the separate [mod-pet-tank](https://github.com/TheSCREWEDSoftware/mod-pet-tank) module (archived now); its code, settings (`PetTank.*`), SQL file names, tables,
+The pet tank part was the separate mod-pet-tank module; its code, settings (`PetTank.*`), SQL file names, tables,
 `.pettank` command and the **PetTank** client addon (`addon/PetTank`) are unchanged, so existing tables and choices
 keep working.
 
@@ -133,7 +133,7 @@ remembers who has had their chance.
    like (the `.dist` alone works too, with the defaults).
 3. The tables `mod_temucraft_threat`, `pet_tank_player` and `pet_tank_starting_pet_given` (characters database) and `pet_tank_starting_pet`
    (world database) are made by the DB updater on the next start (`data/sql/db-characters`, `data/sql/db-world`).
-   Coming from [mod-pet-tank](https://github.com/TheSCREWEDSoftware/mod-pet-tank): remove that folder from `modules/` and its `mod-pet-tank.conf`, and carry your
+   Coming from mod-pet-tank: remove that folder from `modules/` and its `mod-pet-tank.conf`, and carry your
    `PetTank.*` values over to `mod-temucraft-threat.conf`.
 4. Players copy `addon/PetTank` to their client's `Interface/AddOns`.
 
