@@ -34,6 +34,7 @@
 #include "TemucraftModuleText.h"
 #include "TemucraftThreatShared.h"
 #include <algorithm>
+#include <mutex>
 #include <sstream>
 #include <unordered_map>
 #include <unordered_set>
@@ -91,6 +92,7 @@ namespace
 
     std::unordered_map<uint32, GroupRoles> groups;     // group guid counter -> roles
     std::unordered_map<uint32, uint32> timers;         // player -> ms since the last look
+    std::recursive_mutex stateLock;                    // map update threads share groups and timers
 
     int64 Now() { return int64(GameTime::GetGameTime().count()); }
     uint32 Key(Group* g) { return g->GetGUID().GetCounter(); }
@@ -522,6 +524,7 @@ namespace
 
     GroupRoles* RolesOf(Player* p)
     {
+        std::lock_guard<std::recursive_mutex> guard(stateLock);
         Group* g = p->GetGroup();
         if (!Managed(g) || g->isLFGGroup())
             return nullptr;
@@ -541,6 +544,7 @@ namespace
 
     void Answer(Player* p, std::string const& what, std::string const& arg)
     {
+        std::lock_guard<std::recursive_mutex> guard(stateLock);
         Group* g = p->GetGroup();
         if (!settings.enable || !Managed(g) || g->isLFGGroup())
         {
@@ -653,6 +657,7 @@ namespace
 
 TemucraftTankRole TemucraftTankRoleOf(Player* p)
 {
+    std::lock_guard<std::recursive_mutex> guard(stateLock);
     if (!settings.enable || !p)
         return TemucraftTankRole::Normal;
     Group* g = p->GetGroup();
@@ -713,7 +718,11 @@ class TemucraftTankRolesGroup : public GroupScript
 {
 public:
     TemucraftTankRolesGroup() : GroupScript("TemucraftTankRolesGroup", { GROUPHOOK_ON_DISBAND }) { }
-    void OnDisband(Group* g) override { groups.erase(g->GetGUID().GetCounter()); }
+    void OnDisband(Group* g) override
+    {
+        std::lock_guard<std::recursive_mutex> guard(stateLock);
+        groups.erase(g->GetGUID().GetCounter());
+    }
 };
 
 class TemucraftTankRolesPlayer : public PlayerScript
@@ -726,6 +735,7 @@ public:
     {
         if (!settings.enable)
             return;
+        std::lock_guard<std::recursive_mutex> guard(stateLock);
         uint32& t = timers[p->GetGUID().GetCounter()];
         t += diff;
         if (t < 1000)
@@ -736,7 +746,11 @@ public:
             Evaluate(g);
     }
 
-    void OnPlayerLogout(Player* p) override { timers.erase(p->GetGUID().GetCounter()); }
+    void OnPlayerLogout(Player* p) override
+    {
+        std::lock_guard<std::recursive_mutex> guard(stateLock);
+        timers.erase(p->GetGUID().GetCounter());
+    }
 
     using PlayerScript::OnPlayerCanUseChat;
     bool OnPlayerCanUseChat(Player* player, uint32 type, uint32 language, std::string& msg, Player* receiver) override
