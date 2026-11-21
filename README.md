@@ -16,7 +16,7 @@ Stances and forms are checked every second; talents, spec swaps and resurrection
 The bonus and the reduction are hidden passive threat auras (25063 "Increase Threat" and 33790) whose amount the
 module sets; tank mode adds 57339 (Tank Class Passive Threat).
 
-Characters table: `mod_temucraft_threat` (tank mode choice). Texts: `module_string` rows of `mod-temucraft-threat`.
+Characters table: `mod_temucraft_character_setting` (setting `tankmode`) (tank mode choice). Texts: `module_string` rows of `mod-temucraft-threat`.
 
 ## Group tank roles
 
@@ -131,7 +131,7 @@ remembers who has had their chance.
 1. Put this folder in your AzerothCore `modules/` folder and rebuild the server.
 2. Copy `conf/mod-temucraft-threat.conf.dist` to your server's `configs/modules/` as `mod-temucraft-threat.conf` and change what you
    like (the `.dist` alone works too, with the defaults).
-3. The tables `mod_temucraft_threat`, `pet_tank_player` and `pet_tank_starting_pet_given` (characters database) and `pet_tank_starting_pet`
+3. The tables `mod_temucraft_character_setting` (setting `tankmode`), `pet_tank_player` and `pet_tank_starting_pet_given` (characters database) and `pet_tank_starting_pet`
    (world database) are made by the DB updater on the next start (`data/sql/db-characters`, `data/sql/db-world`).
    Coming from mod-pet-tank: remove that folder from `modules/` and its `mod-pet-tank.conf`, and carry your
    `PetTank.*` values over to `mod-temucraft-threat.conf`.

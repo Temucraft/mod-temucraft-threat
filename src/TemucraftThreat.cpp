@@ -265,7 +265,7 @@ namespace
 
     void SaveTank(Player* p)
     {
-        CharacterDatabase.Execute("REPLACE INTO `mod_temucraft_threat` (`guid`, `tank_mode`) VALUES ({}, {})",
+        CharacterDatabase.Execute("REPLACE INTO `mod_temucraft_character_setting` (`guid`, `setting`, `value`) VALUES ({}, 'tankmode', {})",
             p->GetGUID().GetCounter(), StateOf(p).tankMode ? 1 : 0);
     }
 }
@@ -341,8 +341,8 @@ public:
         uint32 const guid = p->GetGUID().GetCounter();
         State& s = states[guid];
         s = State();
-        if (QueryResult r = CharacterDatabase.Query("SELECT `tank_mode` FROM `mod_temucraft_threat` WHERE `guid` = {}", guid))
-            s.tankMode = r->Fetch()[0].Get<uint8>() != 0;
+        if (QueryResult r = CharacterDatabase.Query("SELECT `value` FROM `mod_temucraft_character_setting` WHERE `guid` = {} AND `setting` = 'tankmode'", guid))
+            s.tankMode = r->Fetch()[0].Get<int32>() != 0;
         s.spec = ReadSpec(p);
         p->m_Events.AddEventAtOffset([p]() { Apply(p); }, 1s);
     }
@@ -350,7 +350,7 @@ public:
     void OnPlayerLogout(Player* p) override { states.erase(p->GetGUID().GetCounter()); }
     void OnPlayerDelete(ObjectGuid guid, uint32 /*account*/) override
     {
-        CharacterDatabase.Execute("DELETE FROM `mod_temucraft_threat` WHERE `guid` = {}", guid.GetCounter());
+        CharacterDatabase.Execute("DELETE FROM `mod_temucraft_character_setting` WHERE `guid` = {} AND `setting` = 'tankmode'", guid.GetCounter());
     }
 
     // stances, forms and presences change any time: look every second
