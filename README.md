@@ -7,10 +7,10 @@ Threat for players and pets, in one module (AzerothCore, WotLK 3.3.5a). All C++.
 | Part | What it does | Settings |
 |---|---|---|
 | **Tank bonus** | Tank specs make +50% threat in their tanking stance, form or presence (Defensive Stance, Righteous Fury, Bear / Dire Bear Form, Frost Presence), on top of the class's own threat. Per-class percents. | `Temucraft.Threat.Tank.*` |
-| **Tank mode** | `.tankmode [on/off]` for Demonology warlocks, Enhancement shamans, Survival hunters and Combat rogues: the tank classes' passive threat (+43%), the tank bonus, Taunt, 10% less damage taken, and extra threat from their signature abilities. Saved per character. | `Temucraft.Threat.TankMode.*` |
+| **Tank mode** | `.temucraft tankmode [on/off]` for Demonology warlocks, Enhancement shamans, Survival hunters and Combat rogues: the tank classes' passive threat (+43%), the tank bonus, Taunt, 10% less damage taken, and extra threat from their signature abilities. Saved per character. | `Temucraft.Threat.TankMode.*` |
 | **Healer threat** | Discipline/holy priests, holy paladins, restoration shamans and druids make 30% less threat. | `Temucraft.Threat.Healer.*` |
 
-`.threat` tells a player what applies to them right now. Specs are read from the talent tree with the most points.
+`.temucraft threat` tells a player what applies to them right now. Specs are read from the talent tree with the most points.
 Stances and forms are checked every second; talents, spec swaps and resurrection apply at once.
 
 The bonus and the reduction are hidden passive threat auras (25063 "Increase Threat" and 33790) whose amount the
@@ -28,7 +28,7 @@ Characters table: `mod_temucraft_threat` (tank mode choice). Texts: `module_stri
 | **No tank** | Out of combat, when the party is full or inside a dungeon or raid, everyone is asked: stand in yourself, pick someone (they must accept), or no thanks. **Stand-in Tank** (buff): +50% threat, Taunt, 1% more mana/energy/runic power regeneration, but 10% less health, armor and damage. A real tank joining ends it. |
 
 The Temucraft interface (client 1.3.0, [`TemucraftTankRoles.lua`](https://github.com/Temucraft/mod-temucraft-client-version/blob/master/client/Interface/FrameXML/Temucraft/TemucraftTankRoles.lua), addon prefix `TTR`) shows each question with what
-the choices mean and a countdown. In chat: `.tankrole` (status), `.tankrole claim | pass | vote <name> | volunteer |
+the choices mean and a countdown. In chat: `.temucraft tankrole` (status), `.temucraft tankrole claim | pass | vote <name> | volunteer |
 pick <name> | accept | decline | stepdown | ask` (ask starts the question again).
 
 Spells (spell_dbc here, Spell.dbc in the client's patch-T): 96390 Not Playing Your Spec and 96391 its hidden power
@@ -39,7 +39,7 @@ SQL from the English texts in the code.
 ## Pets (pet tank)
 
 The pet tank part was the separate mod-pet-tank module; its code, settings (`PetTank.*`), SQL file names, tables,
-`.pettank` command and the **PetTank** client addon (`addon/PetTank`) are unchanged, so existing tables and choices
+`.temucraft pettank` command and the **PetTank** client addon (`addon/PetTank`) are unchanged, so existing tables and choices
 keep working.
 
 
@@ -58,8 +58,8 @@ core starts every newly tamed pet unhappy. `PetTank.Happiness.Tamed` (default `f
 best: `empty`, `unhappy`, `lowcontent`, `content`, `lowhappy`, `happy`, `full`, or a percent of the bar (`40`). They
 work for every hunter pet, everywhere (PetTank.Where and PetTank.Pets don't apply to them).
 `PetTank.Happiness.Mode` decides how the minimum applies: `enforce` (default) raises a pet back up by itself;
-`player` lets each player choose, by itself or only when they ask (`.pettank happy`, or the addon's "Make it
-happy" button; `.pettank happy auto on|off` or the addon's tick box switches).
+`player` lets each player choose, by itself or only when they ask (`.temucraft pettank happy`, or the addon's "Make it
+happy" button; `.temucraft pettank happy auto on|off` or the addon's tick box switches).
 
 The happiness settings, worst to best: `empty` (0%), `unhappy` (16%, where the core starts a tame), `lowcontent`
 (32%), `content` (48%), `lowhappy` (63%), `happy` (82%), `full` (100%), or any percent of the bar.
@@ -92,7 +92,7 @@ So `PetTank.Where.Dungeon.Heroic = "solo"` gives the bonuses in heroic dungeons 
 count as their size's normal difficulty.
 
 On top of that, players can turn the bonuses off for themselves in any place (`PetTank.PlayerToggle`, on by
-default): with the PetTank addon, or `.pettank off <place>`. They can never turn them on where the server doesn't
+default): with the PetTank addon, or `.temucraft pettank off <place>`. They can never turn them on where the server doesn't
 allow them.
 
 ### Starting pet
@@ -123,7 +123,7 @@ Which pet, and which quests, comes from the world table `pet_tank_starting_pet`,
   a character gets it when the core lets them use hunter pets (`IsClass(CLASS_HUNTER, CLASS_CONTEXT_PET)`: hunters,
   or any class a script lets use them); otherwise the server log says so and they get none.
 
-Change the table and run `.pettank reload` (no restart needed). The characters table `pet_tank_starting_pet_given`
+Change the table and run `.temucraft pettank reload` (no restart needed). The characters table `pet_tank_starting_pet_given`
 remembers who has had their chance.
 
 ### Install
@@ -141,11 +141,11 @@ remembers who has had their chance.
 
 | Command | Who | What |
 |---|---|---|
-| `.pettank` | everyone | where the bonuses are on, and whether they are on right here |
-| `.pettank off <place>` / `.pettank on <place>` | everyone | turn them off / back on for you; places: `world`, `normal`, `heroic`, `raid10`, `raid10h`, `raid25`, `raid25h`, `bg`, `arena`, `here` or `all` |
-| `.pettank happy` | everyone | raise your hunter pet to the happiness minimum now (`Mode = player`) |
-| `.pettank happy auto on\|off` | everyone | raise it by itself or only when you ask (`Mode = player`) |
-| `.pettank reload` | admin | read the settings and `pet_tank_starting_pet` again (after `.reload config`) |
+| `.temucraft pettank` | everyone | where the bonuses are on, and whether they are on right here |
+| `.temucraft pettank off <place>` / `.temucraft pettank on <place>` | everyone | turn them off / back on for you; places: `world`, `normal`, `heroic`, `raid10`, `raid10h`, `raid25`, `raid25h`, `bg`, `arena`, `here` or `all` |
+| `.temucraft pettank happy` | everyone | raise your hunter pet to the happiness minimum now (`Mode = player`) |
+| `.temucraft pettank happy auto on\|off` | everyone | raise it by itself or only when you ask (`Mode = player`) |
+| `.temucraft pettank reload` | admin | read the settings and `pet_tank_starting_pet` again (after `.reload config`) |
 
 ### The PetTank addon
 

@@ -9,13 +9,13 @@
 // - Tanks make more threat: tank specs in their tanking stance, form or presence (Defensive Stance, Righteous Fury,
 //   Bear / Dire Bear Form, Frost Presence) carry a hidden threat bonus (+50% by default, per class settings).
 // - Tank mode for specs that were never tanks: Demonology warlock, Enhancement shaman, Survival hunter, Combat rogue.
-//   .tankmode on: the tank classes' passive threat aura, the tank bonus above, Taunt, less damage taken, and their
+//   .temucraft tankmode on: the tank classes' passive threat aura, the tank bonus above, Taunt, less damage taken, and their
 //   signature abilities make extra threat (Earth Shock, Raptor Strike / Mongoose Bite, Sinister Strike, Searing Pain...).
 // - Healers make less threat: healer specs (discipline/holy priest, holy paladin, restoration shaman and druid) carry
 //   a hidden threat reduction (30% by default) on everything they do.
 // - Group tank roles (TemucraftTankRoles.cpp) can change the tank bonus: off-spec in the Dungeon Finder, another
 //   tank chosen, or a stand-in tank.
-// - .threat: what applies to you right now.
+// - .temucraft threat: what applies to you right now.
 
 #include "Chat.h"
 #include "CommandScript.h"
@@ -383,8 +383,8 @@ public:
     {
         static ChatCommandTable table =
         {
-            { "tankmode", HandleTank,   SEC_PLAYER, Console::No },
-            { "threat",   HandleThreat, SEC_PLAYER, Console::No },
+            { "temucraft tankmode", HandleTank,   101355, Console::No },
+            { "temucraft threat",   HandleThreat, 101356, Console::No },
         };
         return table;
     }
@@ -433,7 +433,7 @@ public:
                 any = true;
                 break;
             case TemucraftTankRole::NotChosen:
-                handler->SendSysMessage(Say(p, T_STATUS_NOT_CHOSEN, "Another player is your group's tank: no tank threat bonus for you (.tankrole)."));
+                handler->SendSysMessage(Say(p, T_STATUS_NOT_CHOSEN, "Another player is your group's tank: no tank threat bonus for you (.temucraft tankrole)."));
                 any = true;
                 break;
             case TemucraftTankRole::StandIn:

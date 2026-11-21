@@ -16,7 +16,7 @@
 //   stands in as tank (themselves, or someone they pick, who has to accept). A stand-in tank gets the tank bonus,
 //   Taunt and 1% more power regeneration, but 10% less health, armor and damage. It ends when a real tank joins.
 // The Temucraft interface (TemucraftTankRoles.lua, prefix TTR) shows the questions with what each choice means;
-// .tankrole does the same in chat.
+// .temucraft tankrole does the same in chat.
 
 #include "Chat.h"
 #include "CommandScript.h"
@@ -253,7 +253,7 @@ namespace
         r.answered.clear();
         uint32 const places = Places(g);
         SendAllWithPercent(g, Acore::StringFormat("VOTE~{}~{}~{}~{}", settings.voteSeconds, places, Names(g, r.candidates), standIn ? "standin" : "tank"));
-        TellAll(g, T_VOTE, "|cffc69b6dTank:|r more players want to tank than there are places ({}). Vote with .tankrole vote <name>: {}.",
+        TellAll(g, T_VOTE, "|cffc69b6dTank:|r more players want to tank than there are places ({}). Vote with .temucraft tankrole vote <name>: {}.",
             places, NameList(g, r.candidates));
     }
 
@@ -294,7 +294,7 @@ namespace
                 r.claimSuppressed = true;
                 r.decided = false;
                 r.chosen.clear();
-                TellAll(g, T_NOBODY_CLAIMED, "|cffc69b6dTank:|r nobody claimed the tank place: every tank keeps the bonus for now (.tankrole claim).");
+                TellAll(g, T_NOBODY_CLAIMED, "|cffc69b6dTank:|r nobody claimed the tank place: every tank keeps the bonus for now (.temucraft tankrole claim).");
                 RefreshAll(g);
             }
             else if (claims.size() <= places)
@@ -308,7 +308,7 @@ namespace
             if (claims.empty())
             {
                 r.nextNoTank = Now() + settings.cooldown;
-                TellAll(g, T_NOBODY_STANDS_IN, "|cffc69b6dTank:|r nobody stands in as tank. Anyone can still: .tankrole volunteer");
+                TellAll(g, T_NOBODY_STANDS_IN, "|cffc69b6dTank:|r nobody stands in as tank. Anyone can still: .temucraft tankrole volunteer");
             }
             else if (claims.size() <= places)
                 SetStandIns(g, r, claims);
@@ -354,7 +354,7 @@ namespace
             bool const tank = std::find(tanks.begin(), tanks.end(), Id(m)) != tanks.end();
             TemucraftAddonSend(m, PREFIX, WithPercent(m, Acore::StringFormat("CLAIM~{}~{}~{}~{}", settings.claimSeconds, places, Names(g, tanks), tank ? 1 : 0)));
             if (tank)
-                Tell(m, Acore::StringFormat(Say(m, T_CLAIM, "|cffc69b6dTank:|r {} tanks in the group and {} place(s). Want it? .tankrole claim or .tankrole pass"),
+                Tell(m, Acore::StringFormat(Say(m, T_CLAIM, "|cffc69b6dTank:|r {} tanks in the group and {} place(s). Want it? .temucraft tankrole claim or .temucraft tankrole pass"),
                     tanks.size(), places));
         }
     }
@@ -369,7 +369,7 @@ namespace
         for (Player* m : Online(g))
             all.push_back(Id(m));
         SendAllWithPercent(g, Acore::StringFormat("NOTANK~{}~{}~{}", settings.noTankSeconds, Places(g), Names(g, all)));
-        TellAll(g, T_NO_TANK, "|cffc69b6dTank:|r nobody in the group plays a tank spec. Stand in? .tankrole volunteer, or .tankrole pick <name>.");
+        TellAll(g, T_NO_TANK, "|cffc69b6dTank:|r nobody in the group plays a tank spec. Stand in? .temucraft tankrole volunteer, or .temucraft tankrole pick <name>.");
     }
 
     // a volunteer (or someone who accepted a pick) while nobody tanks
@@ -409,7 +409,7 @@ namespace
         if (r.phase == Phase::NoTank)
             r.answered.insert(Id(p));
         TemucraftAddonSend(target, PREFIX, WithPercent(target, Acore::StringFormat("PICKED~{}~{}", TemucraftAddonClean(p->GetName()), settings.pickSeconds)));
-        Tell(target, Acore::StringFormat(Say(target, T_PICKED, "|cffc69b6dTank:|r {} picked you to stand in as tank. .tankrole accept or .tankrole decline"), p->GetName()));
+        Tell(target, Acore::StringFormat(Say(target, T_PICKED, "|cffc69b6dTank:|r {} picked you to stand in as tank. .temucraft tankrole accept or .temucraft tankrole decline"), p->GetName()));
         Tell(p, Acore::StringFormat(Say(p, T_PICK_SENT, "|cffc69b6dTank:|r asked {}."), target->GetName()));
     }
 
@@ -772,7 +772,7 @@ public:
 
     ChatCommandTable GetCommands() const override
     {
-        static ChatCommandTable table = { { "tankrole", HandleTankRole, SEC_PLAYER, Console::No } };
+        static ChatCommandTable table = { { "temucraft tankrole", HandleTankRole, 101354, Console::No } };
         return table;
     }
 
@@ -789,7 +789,7 @@ public:
                     handler->SendSysMessage(Say(p, T_OFF_SPEC, "|cffc69b6dTank:|r you took the tank role without a tank spec (Not Playing Your Spec)."));
                     break;
                 case TemucraftTankRole::StandIn:
-                    handler->SendSysMessage(Say(p, T_STATUS_STAND_IN, "|cffc69b6dTank:|r you stand in as your group's tank (.tankrole stepdown to stop)."));
+                    handler->SendSysMessage(Say(p, T_STATUS_STAND_IN, "|cffc69b6dTank:|r you stand in as your group's tank (.temucraft tankrole stepdown to stop)."));
                     break;
                 case TemucraftTankRole::NotChosen:
                     handler->SendSysMessage(Say(p, T_STATUS_CHOSEN, "|cffc69b6dTank:|r another player is your group's tank."));
@@ -798,7 +798,7 @@ public:
                     if (p->GetGroup() && p->GetGroup()->isLFGGroup())
                         handler->SendSysMessage(Say(p, T_STATUS_LFG, "|cffc69b6dTank:|r the Dungeon Finder set your role."));
                     else
-                        handler->SendSysMessage(Say(p, T_STATUS_NONE, "|cffc69b6dTank:|r .tankrole claim | pass | vote <name> | volunteer | pick <name> | accept | decline | stepdown | ask"));
+                        handler->SendSysMessage(Say(p, T_STATUS_NONE, "|cffc69b6dTank:|r .temucraft tankrole claim | pass | vote <name> | volunteer | pick <name> | accept | decline | stepdown | ask"));
                     break;
             }
             return true;

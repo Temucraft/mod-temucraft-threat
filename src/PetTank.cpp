@@ -33,7 +33,7 @@ namespace
 
     struct PlaceInfo
     {
-        char const* key;     // .pettank and the addon
+        char const* key;     // .temucraft pettank and the addon
         char const* option;  // PetTank.Where.<option>
         char const* name;    // shown to players
         char const* fallback;

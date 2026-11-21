@@ -1,5 +1,5 @@
 /*
- * mod-temucraft-threat: .pettank and the server side of the PetTank addon (addon/PetTank).
+ * mod-temucraft-threat: .temucraft pettank and the server side of the PetTank addon (addon/PetTank).
  *
  * The addon whispers to the player themself with the prefix PETTANK:
  *   client -> server  "HELLO\t<version>"   the state below (and the version this module expects)
@@ -138,20 +138,20 @@ public:
     {
         static ChatCommandTable petTankTable =
         {
-            { "",       HandleStatusCommand, SEC_PLAYER,        Console::No },
-            { "on",     HandleOnCommand,     SEC_PLAYER,        Console::No },
-            { "off",    HandleOffCommand,    SEC_PLAYER,        Console::No },
-            { "happy",  HandleHappyCommand,  SEC_PLAYER,        Console::No },
+            { "",       HandleStatusCommand, 101350,        Console::No },
+            { "on",     HandleOnCommand,     101351,        Console::No },
+            { "off",    HandleOffCommand,    101352,        Console::No },
+            { "happy",  HandleHappyCommand,  101353,        Console::No },
             { "reload", HandleReloadCommand, 101301 /* SEC_ADMINISTRATOR -> RBAC */, Console::Yes },
         };
         static ChatCommandTable commandTable =
         {
-            { "pettank", petTankTable },
+            { "temucraft pettank", petTankTable },
         };
         return commandTable;
     }
 
-    // .pettank: where the bonuses are on, and whether they are on right here
+    // .temucraft pettank: where the bonuses are on, and whether they are on right here
     static bool HandleStatusCommand(ChatHandler* handler)
     {
         Player* player = handler->GetSession()->GetPlayer();
@@ -172,7 +172,7 @@ public:
                 GroupsText(c.where[i]), c.where[i] && !sPetTank->PlayerWants(player, i) ? ", |cffFF6060you turned it "
                 "off|r" : "");
         if (c.playerToggle)
-            handler->SendSysMessage("  .pettank off <place|all> / .pettank on <place|all> turns it off or on for you "
+            handler->SendSysMessage("  .temucraft pettank off <place|all> / .temucraft pettank on <place|all> turns it off or on for you "
                 "(or use the PetTank addon).");
         return true;
     }
@@ -220,7 +220,7 @@ public:
         return SetFor(handler, what.value_or("all"), false);
     }
 
-    // .pettank happy [auto on|off]: raise the hunter pet to the happiness minimum now, or choose whether it happens
+    // .temucraft pettank happy [auto on|off]: raise the hunter pet to the happiness minimum now, or choose whether it happens
     // by itself (PetTank.Happiness.Mode = player)
     static bool HandleHappyCommand(ChatHandler* handler, Optional<std::string> what, Optional<std::string> onOff)
     {
@@ -242,7 +242,7 @@ public:
             if (onOff)
                 sPetTank->SetHappinessAuto(player, Lower(*onOff) == "on" || *onOff == "1");
             handler->PSendSysMessage("|cff8FD14F[Pet Tank]|r Your hunter pet's happiness is raised to the minimum "
-                "{}.", sPetTank->HappinessAuto(player) ? "by itself" : "only when you ask (.pettank happy)");
+                "{}.", sPetTank->HappinessAuto(player) ? "by itself" : "only when you ask (.temucraft pettank happy)");
             SendPetTankState(player);
             return true;
         }

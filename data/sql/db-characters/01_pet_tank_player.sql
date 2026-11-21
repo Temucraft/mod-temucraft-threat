@@ -1,4 +1,4 @@
--- mod-temucraft-threat (pet tank): where each player turned the pet bonuses off for themself (the PetTank addon or .pettank).
+-- mod-temucraft-threat (pet tank): where each player turned the pet bonuses off for themself (the PetTank addon or .temucraft pettank).
 -- `disabled` is a bit mask of places (1 world, 2 dungeon normal, 4 dungeon heroic, 8 raid 10, 16 raid 10 heroic,
 -- 32 raid 25, 64 raid 25 heroic, 128 battleground, 256 arena). No row = on everywhere the server allows it.
 CREATE TABLE IF NOT EXISTS `pet_tank_player` (

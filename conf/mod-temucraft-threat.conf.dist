@@ -17,12 +17,12 @@
 #                     Percent % more threat, on top of what the class already has. ClassPercent overrides it per
 #                     class ("class:percent", e.g. "1:40 11:60"). With NeedStance only in Defensive Stance (warrior),
 #                     Righteous Fury (paladin), Bear / Dire Bear Form (druid) or Frost Presence (death knight).
-#                     Players in tank mode (below) get it too. .threat shows what applies to you.
+#                     Players in tank mode (below) get it too. .temucraft threat shows what applies to you.
 #                     Classes: 1 warrior 2 paladin 3 hunter 4 rogue 5 priest 6 death knight 7 shaman 9 warlock 11 druid.
 #        Default:     1, 50, "", "1:2 2:1 11:1 6:0-2", 1
 #
 #    Temucraft.Threat.TankMode (.Specs, .DamageTaken, .Taunt, .Threat)
-#        Description: .tankmode for the listed specs (default Demonology warlock, Enhancement shaman, Survival
+#        Description: .temucraft tankmode for the listed specs (default Demonology warlock, Enhancement shaman, Survival
 #                     hunter, Combat rogue). While on: the tank classes' passive threat bonus (+43%), the tank bonus
 #                     above, Taunt (if Taunt is on), DamageTaken % less damage, and the Threat "spell:multiplier"
 #                     abilities (any rank) make that much more threat: Earth Shock x3, Raptor Strike and Mongoose
@@ -39,7 +39,7 @@
 #                     more tank specs than places (PartyTanks in a party, Raid10Tanks in a raid of up to 10,
 #                     Raid25Tanks in a bigger one) the tanks claim the places, and if more claim than fit the group
 #                     votes (ties: the leader's vote, then who claimed first). Tanks not chosen play without the tank
-#                     bonus. The Temucraft interface asks; .tankrole does the same in chat.
+#                     bonus. The Temucraft interface asks; .temucraft tankrole does the same in chat.
 #        Default:     1, 1, 2, 3
 #
 #    Temucraft.Threat.Roles.OffSpec (.Threat)
@@ -58,7 +58,7 @@
 #    Temucraft.Threat.Roles.NoTank.Prompt (.Cooldown)
 #        Description: When the group is asked about a stand-in tank (out of combat only): "full" (5 players in a
 #                     party), "instance" (anyone in the group is in a dungeon or raid), both, or "" (only with
-#                     .tankrole ask). Cooldown: seconds before asking again if nobody stood in (a new member asks
+#                     .temucraft tankrole ask). Cooldown: seconds before asking again if nobody stood in (a new member asks
 #                     again at once).
 #        Default:     "full,instance", 600
 #
@@ -117,7 +117,7 @@ Temucraft.Threat.Roles.PickSeconds = 30
 #
 # Pets that taunt (or every pet, PetTank.Pets) hold threat like a tank, regenerate faster out of combat, and get
 # more out of Mend Pet and Health Funnel for less. PetTank.Where.* says where, per place and per group size;
-# players can turn it off for themselves per place (the PetTank addon or .pettank off <place>).
+# players can turn it off for themselves per place (the PetTank addon or .temucraft pettank off <place>).
 #
 ###################################################################################################
 
@@ -186,7 +186,7 @@ PetTank.Where.Arena = "none"
 #
 #    PetTank.PlayerToggle
 #        Description: Players may turn the bonuses off for themselves, per place (the PetTank addon, or
-#                     .pettank off <world|normal|heroic|raid10|raid10h|raid25|raid25h|bg|arena|here|all>). They can
+#                     .temucraft pettank off <world|normal|heroic|raid10|raid10h|raid25|raid25h|bg|arena|here|all>). They can
 #                     never turn them on where PetTank.Where.* doesn't allow them.
 #        Default:     1 - enabled
 #                     0 - disabled (the server settings decide alone)
@@ -284,8 +284,8 @@ PetTank.Happiness.Minimum = "off"
 #    PetTank.Happiness.Mode
 #        Description: How PetTank.Happiness.Minimum applies (nothing happens with Minimum = "off").
 #        Default:     "enforce" - always, by itself: a pet below the minimum goes back up right away
-#                     "player"  - each player chooses: by itself, or only when they ask (.pettank happy, or the
-#                                 PetTank addon's button); .pettank happy auto on|off, or the addon, switches
+#                     "player"  - each player chooses: by itself, or only when they ask (.temucraft pettank happy, or the
+#                                 PetTank addon's button); .temucraft pettank happy auto on|off, or the addon, switches
 
 PetTank.Happiness.Mode = "enforce"
 

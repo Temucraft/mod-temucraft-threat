@@ -45,7 +45,7 @@ enum PetTankGroup : uint8
 enum PetTankHappinessMode : uint8
 {
     HAPPINESS_ENFORCE = 1, // always, by itself
-    HAPPINESS_PLAYER  = 2  // each player chooses: by itself, or only when they ask (.pettank happy, the addon)
+    HAPPINESS_PLAYER  = 2  // each player chooses: by itself, or only when they ask (.temucraft pettank happy, the addon)
 };
 
 // Which pets get the bonuses (PetTank.Pets)
@@ -99,7 +99,7 @@ public:
     static PetTankGroup GroupOf(Player const* player);
     static char const* PlaceName(uint8 place);
     static char const* GroupName(uint8 group);
-    // The short name used by .pettank and the addon: world, normal, heroic, raid10, raid10h, raid25, raid25h, bg, arena
+    // The short name used by .temucraft pettank and the addon: world, normal, heroic, raid10, raid10h, raid25, raid25h, bg, arena
     static char const* PlaceKey(uint8 place);
     static int8 PlaceFromKey(std::string const& key);
 
@@ -150,7 +150,7 @@ bool HandlePetTankAddonMessage(Player* player, std::string const& msg);
 void SendPetTankState(Player* player);
 
 // PetTankStartingPet.cpp: reads PetTank.StartingPet* and the world table pet_tank_starting_pet (at startup and on
-// .pettank reload)
+// .temucraft pettank reload)
 void LoadPetTankStartingPets();
 
 #endif
