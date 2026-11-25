@@ -415,14 +415,14 @@ optionsTitle:SetPoint("TOPLEFT", 16, -16)
 optionsTitle:SetText(UI_TITLE)
 local optionsText = optionsPanel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 optionsText:SetPoint("TOPLEFT", optionsTitle, "BOTTOMLEFT", 0, -8)
-optionsText:SetWidth(560)
+optionsText:SetPoint("RIGHT", optionsPanel, "RIGHT", -16, 0)   -- wraps inside the Interface Options page
 optionsText:SetJustifyH("LEFT")
 optionsText:SetText("Where your pet's tank bonuses are on for you: more threat, faster " ..
     "regeneration out of combat, and Mend Pet / Health Funnel heal more for less. Only on servers with the " ..
     "module.\n\n/pettank - show or hide the window\n.pettank - the same in chat")
 local optionsStatus = optionsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 optionsStatus:SetPoint("TOPLEFT", optionsText, "BOTTOMLEFT", 0, -12)
-optionsStatus:SetWidth(560)
+optionsStatus:SetPoint("RIGHT", optionsPanel, "RIGHT", -16, 0)   -- wraps inside the Interface Options page
 optionsStatus:SetJustifyH("LEFT")
 local minimapCheck = CreateFrame("CheckButton", UI_NAME .. "MinimapCheck", optionsPanel,
     "InterfaceOptionsCheckButtonTemplate")
